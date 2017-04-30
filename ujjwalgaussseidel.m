@@ -5,15 +5,13 @@
 % Setting of number of interior nodes in x-direction
 % equal number of grids necessary
 
-clear all; 
-clc;
-
 M=input('M=');
 
 % Setting up number of interior points in y-direction
 N= input('N=');
 
 
+%% setting up increments in each direction with the paranmeters provided in
 
 
 
@@ -22,7 +20,8 @@ x = linspace(-pi,pi,M+2);
 y = linspace(-pi,pi,N+2);
 
 % U is the solution of the given problem
-U = ones(M+2,N+2); % The solution grid set up  
+U = ones(M+2,N+2); % The solution grid set up 
+                   % added 2 to account for initital and final point 
 F = rightside(x,y);
 
 %% Associated boundary conditions
@@ -42,27 +41,18 @@ F = rightside(x,y);
   % Setting up increments along with x and y increments
   dx = (2*pi)/M;
   dy = (2*pi)/N;
-
+ 
+  
+ % Multipliers to be used while solving the equation
+  
+ E = 1/dx^2;
+ R = 1/dy^2;
+ T = -((2*E)+(2*R));
+ 
  % placing the BC's on the top and bottom of the solution grid
-  U(1,:)   = ubottom/dy^2;
-  U(end,:) = utop/dy^2; 
+  U(1,:)   = R*ubottom;
+  U(end,:) = R*utop; 
  
  % Placing BC's on the left side of the solution grid
-  U(:,1) = uleft/dx^2;
-  
-  %% Applying Neuman Condition in the right side of the Solution-Grid
-  %% Applying Neuman Condition in the right side of the Solution-Grid
-  % right side of the grid U will be computed using preset values
-  
-  for j = 2:N+1
-      U(j,end) = F(j,end) - ((2*U(j,end-1))/dx^2 - (U(j-1,end))/dy^2 - (U(j+1,end))/dy^2);
-  end
- 
-  %% Solving the grids or internal nodes of the solution vector
-  
-  for k = 2:M+1
-    for j = 2:N+1
-        U(j,k) =   F(j,k) - (U(j,k-1))/dx^2 - (U(j,k+1))/dx^2- (U(j-1,k))/dy^2 - (U(j+1,k))/dy^2 ;
-    end
- end
+  U(:,1) = E*uleft;
   
