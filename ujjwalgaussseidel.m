@@ -56,4 +56,18 @@ F = rightside(x,y);
   U(:,1) = uleft/dx^2;
   
   %% Applying Neuman Condition in the right side of the Solution-Grid
+  %% Applying Neuman Condition in the right side of the Solution-Grid
+  % right side of the grid U will be computed using preset values
+  
+  for j = 2:N+1
+      U(j,end) = F(j,end) - ((2*U(j,end-1))/dx^2 - (U(j-1,end))/dy^2 - (U(j+1,end))/dy^2);
+  end
+ 
+  %% Solving the grids or internal nodes of the solution vector
+  
+  for k = 2:M+1
+    for j = 2:N+1
+        U(j,k) =   F(j,k) - (U(j,k-1))/dx^2 - (U(j,k+1))/dx^2- (U(j-1,k))/dy^2 - (U(j+1,k))/dy^2 ;
+    end
+ end
   
