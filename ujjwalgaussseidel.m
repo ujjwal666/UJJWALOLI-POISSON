@@ -56,3 +56,29 @@ F = rightside(x,y);
  % Placing BC's on the left side of the solution grid
   U(:,1) = E*uleft;
   
+%% Applying Neuman Condition in the right side of the Solution-Grid
+  % right side of the grid U will be computed using preset values
+  err = 10; % setting up error constraint
+  
+  
+  
+  while err > 1E-5  % Setting up loop for error calculation
+  B=U; % Setting up matrix for error calculation
+  for j = 2:N+1
+      U(j,end) = 1/T*(F(j,end) - (2*E*U(j,end-1) -R*U(j-1,end) - R*U(j+1,end)));
+  end
+ 
+  %% Solving the grids or internal nodes of the solution vector
+  
+   for k = 2:M+1
+    for j = 2:N+1
+        U(j,k) =   1/T*(F(j,k) - E*U(j,k-1) - E*U(j,k+1)- R*U(j-1,k) - R*U(j+1,k)) ;
+   
+     end
+   end
+   err = abs(max(max(((B-U)./B)))); 
+  end
+  
+  surf(U)
+  
+  
