@@ -14,12 +14,7 @@ M=input('M=');
 N= input('N=');
 
 
-%% setting up increments in each direction with the paranmeters provided in
-% the problem statement
-%first_xincrement=M+1;
-%first_yincrement=N+1;
-%second_xincrement=M+2;
-%second_yincrement=N+2;
+
 
 
 %Creation of x and y values or descretization
