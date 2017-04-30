@@ -62,7 +62,11 @@ F = rightside(x,y);
   
   
   
-  while err > 1E-5  % Setting up loop for error calculation
+  tic % setting up atimer
+  error_iterations=0; % counting number of iterations for error calulation
+  
+  
+  while err > 1E-6  % Setting up loop for error calculation
   B=U; % Setting up matrix for error calculation
   for j = 2:N+1
       U(j,end) = 1/T*(F(j,end) - (2*E*U(j,end-1) -R*U(j-1,end) - R*U(j+1,end)));
@@ -70,15 +74,33 @@ F = rightside(x,y);
  
   %% Solving the grids or internal nodes of the solution vector
   
-   for k = 2:M+1
+  gauss_iterations = 0; %setting up counter for gauss iterations
+   
+  for k = 2:M+1
     for j = 2:N+1
         U(j,k) =   1/T*(F(j,k) - E*U(j,k-1) - E*U(j,k+1)- R*U(j-1,k) - R*U(j+1,k)) ;
-   
+   gauss_iterations = gauss_iterations + 1;
      end
-   end
-   err = abs(max(max(((B-U)./B)))); 
   end
   
+  err = abs(max(max(((B-U)./B)))); % Calculations of error
+   
+  error_iterations = error_iterations + 1;
+  end
+  
+  %% PLOTTING THE APPROPRIATE FIGURES
   surf(U)
+  figure
+  contour(U)
+  
+  toc % setting off the timer
+  
+  disp('error iterations:')
+  disp(error_iterations)
+  
+  disp('Gauss_iterations')
+  disp(gauss_iterations)
+  
+  
   
   
