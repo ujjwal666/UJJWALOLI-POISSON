@@ -1,9 +1,10 @@
-%UJJWALGAUSSSEIDEL
+%  UJJWALGAUSSSEIDEL
 % This is the code for solving the Poisson Equation APc1-1 using
 % Gauss-seidel method
 
 % Setting of number of interior nodes in x-direction
 % equal number of grids necessary
+clear all; clc;
 
 M=input('M=');
 
@@ -11,8 +12,11 @@ M=input('M=');
 N= input('N=');
 
 
-%% setting up increments in each direction with the paranmeters provided in
-
+% setting up increments in each direction with the paranmeters provided in
+  ax = -pi;
+  ay = -pi;
+  bx =  pi;
+  by =  pi;
 
 
 %Creation of x and y values or descretization
@@ -22,9 +26,16 @@ y = linspace(-pi,pi,N+2);
 % U is the solution of the given problem
 U = ones(M+2,N+2); % The solution grid set up 
                    % added 2 to account for initital and final point 
-F = rightside(x,y);
+ 
+% this function file creates 2D F matrix 
+% x = values in x direction 
+% y = values in y direction
+                  
+ [Y,X]=meshgrid(y,x);
+ f=cos(pi/2*(((X-ax)/(bx-ax))+1)).*sin(pi*(Y-ay)/(by-ay));
+ F=-f;
 
-%% Associated boundary conditions
+% Associated boundary conditions
 
 % bottom bounddary condition
  ubottom = (x.*(pi-x).^2); %this is the boundary condition for y=-pi 
@@ -56,10 +67,10 @@ F = rightside(x,y);
  % Placing BC's on the left side of the solution grid
   U(:,1) = E*uleft;
   
-%% Applying Neuman Condition in the right side of the Solution-Grid
+  
+  % Applying Neuman Condition in the right side of the Solution-Grid
   % right side of the grid U will be computed using preset values
   err = 10; % setting up error constraint
-  
   
   
   tic % setting up atimer
@@ -68,14 +79,20 @@ F = rightside(x,y);
   
   while err > 1E-6  % Setting up loop for error calculation
   B=U; % Setting up matrix for error calculation
+  
+  % the following for loop has been optimized as per matlab execution
+  % process. The rows change instead of columns
+  
   for j = 2:N+1
       U(j,end) = 1/T*(F(j,end) - (2*E*U(j,end-1) -R*U(j-1,end) - R*U(j+1,end)));
   end
  
-  %% Solving the grids or internal nodes of the solution vector
+  % Solving the grids or internal nodes of the solution vector
   
   gauss_iterations = 0; %setting up counter for gauss iterations
-   
+  
+  % calculation of internal solution grid using for loops
+  
   for k = 2:M+1
     for j = 2:N+1
         U(j,k) =   1/T*(F(j,k) - E*U(j,k-1) - E*U(j,k+1)- R*U(j-1,k) - R*U(j+1,k)) ;
@@ -88,12 +105,14 @@ F = rightside(x,y);
   error_iterations = error_iterations + 1;
   end
   
-  %% PLOTTING THE APPROPRIATE FIGURES
-  surf(U)
-  figure
-  contour(U)
+  % PLOTTING THE APPROPRIATE FIGURES
+  subplot(1,2,1), surf(U)
+  subplot(1,2,2), contour(U)
+  
   
   toc % setting off the timer
+  
+  % PLOTS
   
   disp('error iterations:')
   disp(error_iterations)
