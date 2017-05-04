@@ -69,6 +69,10 @@ F = rightside(x,y);
   
   while err > 1E-6  % Setting up loop for error calculation
   B=U; % Setting up matrix for error calculation
+  % the following for loop has been optimized as per matlab execution
+  % process. The rows change instead of columns
+  
+  
   for j = 2:N+1
       U(j,end) = 1/T*(F(j,end) - (2*E*U(j,end-1) -R*U(j-1,end) - R*U(j+1,end)));
   end
@@ -80,7 +84,7 @@ F = rightside(x,y);
   for k = 2:M+1
     for j = 2:N+1
         U(j,k) =   1/T*(F(j,k) - E*U(j,k-1) - E*U(j,k+1)- R*U(j-1,k) - R*U(j+1,k));
-         U(j,k)=lamda*U(j,k)+(1-lamda)*B(j,k);
+         U(j,k)=lamda*U(j,k)+(1-lamda)*B(j,k); % use of over-relaxation technique
         gauss_iterations = gauss_iterations + 1;
  
      end
@@ -93,9 +97,10 @@ F = rightside(x,y);
   end
   
   %% PLOTTING THE APPROPRIATE FIGURES
-  surf(U)
-  figure
-  contour(U)
+  
+  subplot(1,2,1), surf(U)
+  subplot(1,2,2), contour(U)
+  
   
   toc % setting off the timer
   
@@ -106,6 +111,9 @@ F = rightside(x,y);
   
   disp('Gauss_iterations')
   disp(gauss_iterations)
+  
+  
+  
   
   
   
