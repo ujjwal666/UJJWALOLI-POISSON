@@ -1,19 +1,25 @@
 % over-relaxation method Gauss-seidel
+% over-relaxation method Gauss-seidel
 
 % this script solves gauss-seidel using succeessive over-relaxation method
 % same script as Gauss-seidel is used
 
 % Setting of number of interior nodes in x-direction
 % equal number of grids necessary
-lamda=input('lamda=') % over-relaxation Multiplier
-M=input('M=');
+lamda=input('lamda='); % over-relaxation Multiplier
+ M=input('M=');
 
 % Setting up number of interior points in y-direction
-N= input('N=');
+ N= input('N=');
 
 
 %% setting up increments in each direction with the paranmeters provided in
 
+% setting up increments in each direction with the paranmeters provided in
+  ax = -pi;
+  ay = -pi;
+  bx =  pi;
+  by =  pi;
 
 
 %Creation of x and y values or descretization
@@ -23,7 +29,9 @@ y = linspace(-pi,pi,N+2);
 % U is the solution of the given problem
 U = ones(M+2,N+2); % The solution grid set up 
                    % added 2 to account for initital and final point 
-F = rightside(x,y);
+[Y,X]=meshgrid(y,x); % inlinig, instead of calling a function
+f=cos(pi/2*(2*((X-ax)/(bx-ax))+1)).*sin(pi*(Y-ay)/(by-ay));
+F=-f;
 
 %% Associated boundary conditions
 
@@ -36,7 +44,7 @@ F = rightside(x,y);
   utop = (cos(x).*(pi-x).^2);
   
  %left hand side boundary condition
- uleft = -(4*pi^3+((y+pi)*2*pi*(pi-1)));%boundary condition evaluated at x=-pi
+ uleft = -(4*pi^3)+((y+pi)*2*pi*(pi-1));%boundary condition evaluated at x=-pi
                                   %for all y's
 
   % Setting up increments along with x and y increments
@@ -111,9 +119,4 @@ F = rightside(x,y);
   
   disp('Gauss_iterations')
   disp(gauss_iterations)
-  
-  
-  
-  
-  
   
