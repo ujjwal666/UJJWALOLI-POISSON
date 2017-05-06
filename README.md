@@ -6,3 +6,4 @@ ujjwalgaussseidel.m
 overrelaxation.m
 rightside.m is a function file which must be added to the path before other two files can be executed.
 
+the function file rightside.m is no longer necessary as the code was inlined for optimization
