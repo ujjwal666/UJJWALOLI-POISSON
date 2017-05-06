@@ -2,10 +2,6 @@
 % This is the code for solving the Poisson Equation APc1-1 using
 % Gauss-seidel method
 
-%  UJJWALGAUSSSEIDEL
-% This is the code for solving the Poisson Equation APc1-1 using
-% Gauss-seidel method
-
 % Setting of number of interior nodes in x-direction
 % equal number of grids necessary
 clear all; clc;
@@ -38,7 +34,7 @@ U = ones(M+2,N+2); % The solution grid set up
  [Y,X]=meshgrid(y,x);
  f=cos(pi/2*(2*((X-ax)/(bx-ax))+1)).*sin(pi*(Y-ay)/(by-ay));
  F=-f;
-
+ F=0*F;
 % Associated boundary conditions
 
 % bottom bounddary condition
@@ -123,6 +119,8 @@ U = ones(M+2,N+2); % The solution grid set up
   
   disp('Gauss_iterations')
   disp(gauss_iterations)
+  
+  
   
   
   
