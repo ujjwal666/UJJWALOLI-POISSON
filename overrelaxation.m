@@ -1,4 +1,4 @@
-% over-relaxation method Gauss-seidel
+
 % over-relaxation method Gauss-seidel
 
 % this script solves gauss-seidel using succeessive over-relaxation method
@@ -32,7 +32,7 @@ U = ones(M+2,N+2); % The solution grid set up
 [Y,X]=meshgrid(y,x); % inlinig, instead of calling a function
 f=cos(pi/2*(2*((X-ax)/(bx-ax))+1)).*sin(pi*(Y-ay)/(by-ay));
 F=-f;
-
+F=0*F;
 %% Associated boundary conditions
 
 % bottom bounddary condition
@@ -115,8 +115,10 @@ F=-f;
   %% PLOTS
   
   disp('error iterations:')
-  disp(error_iterations)
+  disp(error_iterations) 
   
   disp('Gauss_iterations')
   disp(gauss_iterations)
+  
+  
   
